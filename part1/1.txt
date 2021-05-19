@@ -1,0 +1,5 @@
+C02F2BTBML7H:~ pehi$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                     PORTS     NAMES
+7ac3d4733e93   nginx     "/docker-entrypoint.…"   28 seconds ago   Exited (0) 6 seconds ago             stupefied_goldstine
+97722b336346   nginx     "/docker-entrypoint.…"   29 seconds ago   Exited (0) 2 seconds ago             gifted_hamilton
+c14a334777d0   nginx     "/docker-entrypoint.…"   31 seconds ago   Up 30 seconds              80/tcp    competent_edison
