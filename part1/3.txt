@@ -1,0 +1,10 @@
+C02F2BTBML7H:Documents pehi$ docker run -it -d devopsdockeruh/simple-web-service:ubuntu
+454a6fc9dc3d23b3c59172145560703500658fef1128729a70a1ce8be55af543
+C02F2BTBML7H:Documents pehi$ docker container ls -a
+CONTAINER ID   IMAGE                                      COMMAND                 CREATED          STATUS                     PORTS     NAMES
+454a6fc9dc3d   devopsdockeruh/simple-web-service:ubuntu   "/usr/src/app/server"   35 seconds ago   Up 35 seconds                        intelligent_liskov
+C02F2BTBML7H:Documents pehi$ docker exec -it intelligent_liskov /bin/bash
+root@454a6fc9dc3d:/usr/src/app# tail -f ./text.log
+2021-05-20 05:56:32 +0000 UTC
+Secret message is: 'You can find the source code here: https://github.com/docker-hy'
+2021-05-20 05:56:34 +0000 UTC
