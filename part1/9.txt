@@ -1,0 +1,24 @@
+C02F2BTBML7H:devopswithdocker pehi$ touch text.log
+C02F2BTBML7H:devopswithdocker pehi$ docker run -v "$(pwd)/text.log:/usr/src/app/text.log" devopsdockeruh/simple-web-service
+Starting log output
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+Wrote text to /usr/src/app/text.log
+^CWrote text to /usr/src/app/text.log
+C02F2BTBML7H:devopswithdocker pehi$ cat text.log 
+2021-06-23 11:57:20 +0000 UTC
+2021-06-23 11:57:22 +0000 UTC
+2021-06-23 11:57:24 +0000 UTC
+2021-06-23 11:57:26 +0000 UTC
+2021-06-23 11:57:28 +0000 UTC
+Secret message is: 'You can find the source code here: https://github.com/docker-hy'
+2021-06-23 11:57:30 +0000 UTC
+2021-06-23 11:57:32 +0000 UTC
+2021-06-23 11:57:34 +0000 UTC
+2021-06-23 11:57:36 +0000 UTC
