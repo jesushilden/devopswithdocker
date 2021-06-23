@@ -1,0 +1,14 @@
+REPOSITORY                          TAG       IMAGE ID       CREATED        SIZE
+alpine                              latest    d4ff818577bc   7 days ago     5.6MB
+ubuntu                              latest    7e0aa2d69a15   2 months ago   72.7MB
+
+C02F2BTBML7H:~ pehi$ docker run -it -d devopsdockeruh/simple-web-service:alpine
+e3f8fc63cdb8d50acbb4cf75f7a7bae105fd2d035ab5d783a7e1950aeb004393
+C02F2BTBML7H:~ pehi$ docker container ls -a
+CONTAINER ID   IMAGE                                      COMMAND                 CREATED          STATUS          PORTS     NAMES
+e3f8fc63cdb8   devopsdockeruh/simple-web-service:alpine   "/usr/src/app/server"   28 seconds ago   Up 27 seconds             elated_mclean
+C02F2BTBML7H:~ pehi$ docker exec -it elated_mclean /bin/sh
+/usr/src/app # tail -f ./text.log 
+2021-06-23 06:35:03 +0000 UTC
+2021-06-23 06:35:05 +0000 UTC
+Secret message is: 'You can find the source code here: https://github.com/docker-hy'
