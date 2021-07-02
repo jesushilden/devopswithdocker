@@ -1,0 +1,53 @@
+C02F2BTBML7H:example-backend pehi$ docker build -t example-backend .
+[+] Building 35.6s (9/9) FINISHED                                                                                                                                                                           
+ => [internal] load build definition from Dockerfile                                                                                                                                                   0.0s
+ => => transferring dockerfile: 134B                                                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                                      0.0s
+ => => transferring context: 194B                                                                                                                                                                      0.0s
+ => [internal] load metadata for docker.io/library/golang:latest                                                                                                                                       2.0s
+ => [internal] load build context                                                                                                                                                                      0.0s
+ => => transferring context: 30.15kB                                                                                                                                                                   0.0s
+ => [1/4] FROM docker.io/library/golang@sha256:91b3c5472d9a2ef12f3165aa8979825a5d8b059720b00412f89fc465a04aaa0c                                                                                       21.5s
+ => => resolve docker.io/library/golang@sha256:91b3c5472d9a2ef12f3165aa8979825a5d8b059720b00412f89fc465a04aaa0c                                                                                        0.0s
+ => => sha256:91b3c5472d9a2ef12f3165aa8979825a5d8b059720b00412f89fc465a04aaa0c 2.36kB / 2.36kB                                                                                                         0.0s
+ => => sha256:f37c08d9a1e12991cd7504e83d694672027bfadf3a773e4be3252350bec7ade0 129.05MB / 129.05MB                                                                                                    15.8s
+ => => sha256:1f10b5e5b99b6f0217b6bd63c2b7d84de88f6c349460a05b6fb0a01957ad18a0 155B / 155B                                                                                                             0.2s
+ => => sha256:be99fa59acd78bb22a41bbc1e15ebfab2262498ee0c2e28c3d09bc44d51d1774 1.79kB / 1.79kB                                                                                                         0.0s
+ => => sha256:ee23292e282684136ded9a63f7f96b3aea50e19e9a5cec684aa7d107d6e1cc30 7.00kB / 7.00kB                                                                                                         0.0s
+ => => sha256:78287c648ba24843d09e43253bb28f9020904cf5874e292918bba071c6c42564 68.75MB / 68.75MB                                                                                                      10.3s
+ => => extracting sha256:78287c648ba24843d09e43253bb28f9020904cf5874e292918bba071c6c42564                                                                                                              3.1s
+ => => extracting sha256:f37c08d9a1e12991cd7504e83d694672027bfadf3a773e4be3252350bec7ade0                                                                                                              5.3s
+ => => extracting sha256:1f10b5e5b99b6f0217b6bd63c2b7d84de88f6c349460a05b6fb0a01957ad18a0                                                                                                              0.0s
+ => [2/4] WORKDIR /usr/src/app                                                                                                                                                                         0.0s
+ => [3/4] COPY . ./                                                                                                                                                                                    0.0s
+ => [4/4] RUN go build                                                                                                                                                                                10.6s
+ => exporting to image                                                                                                                                                                                 1.3s
+ => => exporting layers                                                                                                                                                                                1.3s
+ => => writing image sha256:9ce1f388e6b88677b91f2f5f849afb808d0b9777ccc3ebc2536e3b4eb51cd39d                                                                                                           0.0s 
+ => => naming to docker.io/library/example-backend                                                                                                                                                     0.0s 
+                                                                                                                                                                                                            
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them                                                                                                        
+C02F2BTBML7H:example-backend pehi$ docker run -p 8080:8080 example-backend
+[Ex 2.4+] REDIS_HOST env was not passed so redis connection is not initialized
+[Ex 2.6+] POSTGRES_HOST env was not passed so postgres connection is not initialized
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /ping                     --> server/router.pingpong (4 handlers)
+[GIN-debug] GET    /messages                 --> server/controller.GetMessages (4 handlers)
+[GIN-debug] POST   /messages                 --> server/controller.CreateMessage (4 handlers)
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2021/07/02 - 11:05:10 | 404 |     168.534µs |      172.17.0.1 | GET      "/"
+[GIN] 2021/07/02 - 11:05:13 | 200 |      15.205µs |      172.17.0.1 | GET      "/ping"
+
+============Dockerfile starts==================
+FROM golang
+WORKDIR /usr/src/app
+COPY . ./
+RUN go build
+EXPOSE 8080
+CMD ["./server"]
+============Dockerfile ends====================
