@@ -1,0 +1,83 @@
+=========backend terminal starts============
+^CC02F2BTBML7H:example-backend pehi$ docker build -t example-backend .
+[+] Building 12.6s (9/9) FINISHED                                                                                                                                                                          
+ => [internal] load build definition from Dockerfile                                                                                                                                                  0.0s
+ => => transferring dockerfile: 175B                                                                                                                                                                  0.0s
+ => [internal] load .dockerignore                                                                                                                                                                     0.0s
+ => => transferring context: 117B                                                                                                                                                                     0.0s
+ => [internal] load metadata for docker.io/library/golang:latest                                                                                                                                      1.3s
+ => [1/4] FROM docker.io/library/golang@sha256:91b3c5472d9a2ef12f3165aa8979825a5d8b059720b00412f89fc465a04aaa0c                                                                                       0.0s
+ => [internal] load build context                                                                                                                                                                     0.0s
+ => => transferring context: 1.75kB                                                                                                                                                                   0.0s
+ => CACHED [2/4] WORKDIR /usr/src/app                                                                                                                                                                 0.0s
+ => CACHED [3/4] COPY . ./                                                                                                                                                                            0.0s
+ => [4/4] RUN go build                                                                                                                                                                                9.9s
+ => exporting to image                                                                                                                                                                                1.3s 
+ => => exporting layers                                                                                                                                                                               1.3s 
+ => => writing image sha256:8fbed7631cbde4ef9e218949c2dc1118149dfa806e3cbb9bd51391e35a77fe4c                                                                                                          0.0s 
+ => => naming to docker.io/library/example-backend                                                                                                                                                    0.0s 
+                                                                                                                                                                                                           
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them                                                                                                       
+C02F2BTBML7H:example-backend pehi$ docker run -p 8080:8080 example-backend
+[Ex 2.4+] REDIS_HOST env was not passed so redis connection is not initialized
+[Ex 2.6+] POSTGRES_HOST env was not passed so postgres connection is not initialized
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /ping                     --> server/router.pingpong (4 handlers)
+[GIN-debug] GET    /messages                 --> server/controller.GetMessages (4 handlers)
+[GIN-debug] POST   /messages                 --> server/controller.CreateMessage (4 handlers)
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2021/07/02 - 11:30:22 | 200 |     151.879µs |      172.17.0.1 | GET      "/ping"
+=========backend terminal ends============
+
+=========frontend terminal starts============
+C02F2BTBML7H:example-frontend pehi$ docker build -t example-frontend .
+[+] Building 94.7s (11/11) FINISHED                                                                                                                                                                        
+ => [internal] load build definition from Dockerfile                                                                                                                                                  0.0s
+ => => transferring dockerfile: 255B                                                                                                                                                                  0.0s
+ => [internal] load .dockerignore                                                                                                                                                                     0.0s
+ => => transferring context: 170B                                                                                                                                                                     0.0s
+ => [internal] load metadata for docker.io/library/node:latest                                                                                                                                        1.2s
+ => [1/6] FROM docker.io/library/node@sha256:ca6daf1543242acb0ca59ff425509eab7defb9452f6ae07c156893db06c7a9a4                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                                     0.0s
+ => => transferring context: 710.70kB                                                                                                                                                                 0.0s
+ => CACHED [2/6] WORKDIR /usr/src/app                                                                                                                                                                 0.0s
+ => [3/6] COPY . ./                                                                                                                                                                                   0.0s
+ => [4/6] RUN npm install                                                                                                                                                                            57.0s
+ => [5/6] RUN npm install -g serve                                                                                                                                                                    3.4s
+ => [6/6] RUN npm run build                                                                                                                                                                          19.6s 
+ => exporting to image                                                                                                                                                                               13.4s 
+ => => exporting layers                                                                                                                                                                              13.3s 
+ => => writing image sha256:31f50bad186fe4108c4ca57612fdd5c18a84ccca5c7decb40f31deb3ca197159                                                                                                          0.0s 
+ => => naming to docker.io/library/example-frontend                                                                                                                                                   0.0s 
+                                                                                                                                                                                                           
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them                                                                                                       
+C02F2BTBML7H:example-frontend pehi$ docker run -p 5000:5000 example-frontend
+INFO: Accepting connections at http://localhost:5000
+=========frontend terminal ends============
+
+=============frontend Dockerfile starts=============
+FROM node
+WORKDIR /usr/src/app
+COPY . ./
+ENV REACT_APP_BACKEND_URL=http://localhost:8080/
+RUN npm install
+RUN npm install -g serve
+RUN npm run build
+EXPOSE 5000
+CMD ["serve", "-s", "-l", "5000", "build"]
+=============frontend Dockerfile ends===============
+
+=============backend Dockerfile starts==============
+FROM golang
+WORKDIR /usr/src/app
+COPY . ./
+ENV REQUEST_ORIGIN=http://localhost:5000
+RUN go build
+EXPOSE 8080
+CMD ["./server"]
+=============backend Dockerfile ends================
